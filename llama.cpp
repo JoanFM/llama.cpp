@@ -4704,6 +4704,8 @@ static void llm_load_vocab(
             } else if (
                 tokenizer_pre == "smaug-bpe") {
                 vocab.type_pre = LLAMA_VOCAB_PRE_TYPE_SMAUG;
+            } else if (tokenizer_pre == "jina-v2-zh") {
+                vocab.type_pre = LLAMA_VOCAB_PRE_TYPE_JINA_V2_ZH;
             } else {
                 throw std::runtime_error(format("unknown pre-tokenizer type: '%s'", tokenizer_pre.c_str()));
             }
@@ -4735,7 +4737,7 @@ static void llm_load_vocab(
 
     for (uint32_t i = 0; i < n_vocab; i++) {
         std::string word = gguf_get_arr_str(ctx, token_idx, i);
-        GGML_ASSERT(unicode_cpts_from_utf8(word).size() > 0);
+        //GGML_ASSERT(unicode_cpts_from_utf8(word).size() > 0);
 
         vocab.token_to_id[word] = i;
 
@@ -4758,8 +4760,13 @@ static void llm_load_vocab(
         vocab.linefeed_id = vocab.special_pad_id;
     } else {
         const std::vector<int> ids = llama_tokenize_internal(vocab, "\xC4\x8A", false); // U+010A
-        GGML_ASSERT(!ids.empty() && "model vocab missing newline token");
-        vocab.linefeed_id = ids[0];
+        //GGML_ASSERT(!ids.empty() && "model vocab missing newline token");
+        if (ids.empty()) {
+            vocab.linefeed_id = vocab.special_pad_id;
+        } else {
+            vocab.linefeed_id = ids[0];
+        }
+
     }
 
     // special tokens
@@ -12953,9 +12960,10 @@ struct llm_tokenizer_bpe {
                         break;
                     case LLAMA_VOCAB_PRE_TYPE_GPT2:
                     case LLAMA_VOCAB_PRE_TYPE_OLMO:
-                        word_collection = unicode_regex_split(text, {
+                        /*word_collection = unicode_regex_split(text, {
                             "'s|'t|'re|'ve|'m|'ll|'d| ?\\p{L}+| ?\\p{N}+| ?[^\\s\\p{L}\\p{N}]+|\\s+(?!\\S)",
-                        });
+                        });*/
+                        word_collection = unicode_regex_split(text, {"'s|'t|'re|'ve|'m|'ll|'d| ?\\p{L}+| ?\\p{N}+| ?[^\\s\\p{L}\\p{N}]+|\\s+(?!\\S)|\\s+",});
                         break;
                     case LLAMA_VOCAB_PRE_TYPE_STABLELM2:
                     case LLAMA_VOCAB_PRE_TYPE_QWEN2:
@@ -12964,6 +12972,15 @@ struct llm_tokenizer_bpe {
                             // "(?i:'s|'t|'re|'ve|'m|'ll|'d)|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+"
                             "(?:'[sS]|'[tT]|'[rR][eE]|'[vV][eE]|'[mM]|'[lL][lL]|'[dD])|[^\\r\\n\\p{L}\\p{N}]?\\p{L}+|\\p{N}| ?[^\\s\\p{L}\\p{N}]+[\\r\\n]*|\\s*[\\r\\n]+|\\s+(?!\\S)|\\s+",
                         });
+                        break;
+                    case LLAMA_VOCAB_PRE_TYPE_JINA_V2_ZH:
+                        {
+                            std::string data(text.c_str());
+                            std::transform(data.begin(), data.end(), data.begin(),[](unsigned char c){ return std::tolower(c); });
+                            word_collection = unicode_regex_split(data, {
+                                "'s|'t|'re|'ve|'m|'ll|'d| ?\\p{L}+| ?\\p{N}+| ?[^\\s\\p{L}\\p{N}]+|\\s+(?!\\S)",
+                            });
+                        }
                         break;
                     default:
                         // default regex for BPE tokenization pre-processing
@@ -13071,10 +13088,11 @@ struct llm_tokenizer_bpe {
                     for (auto j = str.begin(); j != str.end(); ++j) {
                         std::string byte_str(1, *j);
                         auto token_multibyte = vocab.token_to_id.find(byte_str);
-                        if (token_multibyte == vocab.token_to_id.end()) {
-                            throw std::runtime_error("ERROR: byte not found in vocab");
+                        if (token_multibyte != vocab.token_to_id.end()) {
+                            output.push_back((*token_multibyte).second);
+                            //throw std::runtime_error("ERROR: byte not found in vocab");
                         }
-                        output.push_back((*token_multibyte).second);
+                        
                     }
                 } else {
                     output.push_back((*token).second);

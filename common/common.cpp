@@ -343,6 +343,7 @@ bool gpt_params_find_arg(int argc, char ** argv, const std::string & arg, gpt_pa
             return true;
         }
         params.prompt = argv[i];
+        std::string aux = "for idx, x in enumerate(xs):\n    print(idx, x)";
         return true;
     }
     if (arg == "-e" || arg == "--escape") {
