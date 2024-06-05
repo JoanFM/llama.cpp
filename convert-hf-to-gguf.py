@@ -420,7 +420,10 @@ class Model:
         # NOTE: if you get an error here, you need to update the convert-hf-to-gguf-update.py script
         #       or pull the latest version of the model from Huggingface
         #       don't edit the hashes manually!
-        if chkhsh == "2a5ec56e027cdeba1c8501ddfb3b443af9cf36aa16fc9b118d7d1c6c4fc56a47":
+        if chkhsh == "0ef9807a4087ebef797fc749390439009c3b9eda9ad1a097abbe738f486c01e5":
+            # ref: https://huggingface.co/meta-llama/Meta-Llama-3-8B
+            res = "llama-bpe"
+        if chkhsh == "049ecf7629871e3041641907f3de7c733e4dbfdc736f57d882ba0b0845599754":
             # ref: https://huggingface.co/deepseek-ai/deepseek-llm-7b-base
             res = "deepseek-llm"
         if chkhsh == "b5971447e22eeab46a99f9214146f5aa7a0b976a1ba44ba920330b08970b538f":
@@ -456,7 +459,10 @@ class Model:
         if chkhsh == "9732afa2de833a78655aab9a74bf5b0d332a3b023cc9938beeae4ca9e674523b":
             # ref: https://huggingface.co/allenai/OLMo-1.7-7B-hf
             res = "olmo"
-        if chkhsh == "a81435dcfe35da4270630047e3b298a5711a9ab255030065df578e247667b049":
+        if chkhsh == "a8594e3edff7c29c003940395316294b2c623e09894deebbc65f33f1515df79e":
+            # ref: https://huggingface.co/databricks/dbrx-base
+            res = "dbrx"
+        if chkhsh == "0876d13b50744004aa9aeae05e7b0647eac9d801b5ba4668afc01e709c15e19f":
             # ref: https://huggingface.co/jinaai/jina-embeddings-v2-base-en
             res = "jina-v2-en"
         if chkhsh == "9732afa2de833a78655aab9a74bf5b0d332a3b023cc9938beeae4ca9e674523b":
@@ -2841,7 +2847,12 @@ def main() -> None:
     hparams = Model.load_hparams(dir_model)
 
     with torch.inference_mode():
-        model_class = Model.from_model_architecture(hparams["architectures"][0])
+        try:
+            model_class = Model.from_model_architecture(hparams["architectures"][0])
+        except NotImplementedError:
+            logger.error(f"Model {hparams['architectures'][0]} is not supported")
+            sys.exit(1)
+
         model_instance = model_class(dir_model, ftype_map[args.outtype], fname_out, args.bigendian, args.use_temp_file, args.no_lazy)
 
         logger.info("Set model parameters")
