@@ -407,7 +407,7 @@ class Model:
         # we will use this unique identifier to write a "tokenizer.ggml.pre" entry in the GGUF file which we can
         # use in llama.cpp to implement the same pre-tokenizer
 
-        chktxt = '\n \n\n \n\n\n \t \t\t \t\n  \n   \n    \n     \n🚀 (normal) 😶\u200d🌫️ (multiple emojis concatenated) ✅ 🦙🦙 3 33 333 3333 33333 333333 3333333 33333333 3.3 3..3 3...3 កាន់តែពិសេសអាច😁 ?我想在apple工作1314151天～ ------======= нещо на Български \'\'\'\'\'\'```````""""......!!!!!!?????? I\'ve been \'told he\'s there, \'RE you sure? \'M not sure I\'ll make it, \'D you like some tea? We\'Ve a\'lL'
+        chktxt = '\n \n\n \n\n\n \t \t\t \t\n  \n   \n    \n     \n🚀 (normal) 😶\u200d🌫️ (multiple emojis concatenated) ✅ 🦙🦙 3 33 333 3333 33333 333333 3333333 33333333 3.3 3..3 3...3 កាន់តែពិសេសអាច😁 ?我想在apple工作1314151天～ ------======= нещо на Български \'\'\'\'\'\'```````""""......!!!!!!?????? I\'ve been \'told he\'s there, \'RE you sure? \'M not sure I\'ll make it, \'D you like some tea? We\'Ve a\'lL # Use the built-in enumerator\nfor idx, x in enumerate(xs):\n    print(idx, x)'
 
         chktok = tokenizer.encode(chktxt)
         chkhsh = sha256(str(chktok).encode()).hexdigest()
@@ -426,37 +426,37 @@ class Model:
         if chkhsh == "049ecf7629871e3041641907f3de7c733e4dbfdc736f57d882ba0b0845599754":
             # ref: https://huggingface.co/deepseek-ai/deepseek-llm-7b-base
             res = "deepseek-llm"
-        if chkhsh == "347715f544604f9118bb75ed199f68779f423cabb20db6de6f31b908d04d7821":
+        if chkhsh == "b5971447e22eeab46a99f9214146f5aa7a0b976a1ba44ba920330b08970b538f":
             # ref: https://huggingface.co/deepseek-ai/deepseek-coder-6.7b-base
             res = "deepseek-coder"
-        if chkhsh == "8aeee3860c56296a157a1fe2fad249ec40aa59b1bb5709f4ade11c4e6fe652ed":
+        if chkhsh == "6f9b95824a16270c180000affa9a33c7cf0a2d257c255a2a781bdf74ccedd296":
             # ref: https://huggingface.co/tiiuae/falcon-7b
             res = "falcon"
-        if chkhsh == "0876d13b50744004aa9aeae05e7b0647eac9d801b5ba4668afc01e709c15e19f":
+        if chkhsh == "a81435dcfe35da4270630047e3b298a5711a9ab255030065df578e247667b049":
             # ref: https://huggingface.co/BAAI/bge-small-en-v1.5
             res = "bert-bge"
-        if chkhsh == "b6dc8df998e1cfbdc4eac8243701a65afe638679230920b50d6f17d81c098166":
+        if chkhsh == "9732afa2de833a78655aab9a74bf5b0d332a3b023cc9938beeae4ca9e674523b":
             # ref: https://huggingface.co/mosaicml/mpt-7b
             res = "mpt"
-        if chkhsh == "35d91631860c815f952d711435f48d356ebac988362536bed955d43bfa436e34":
+        if chkhsh == "123d32ec0d221232846c22dad13f1a322e7319eab37ab2d0ea22754d652060a7":
             # ref: https://huggingface.co/bigcode/starcoder2-3b
             res = "starcoder"
-        if chkhsh == "3ce83efda5659b07b1ad37ca97ca5797ea4285d9b9ab0dc679e4a720c9da7454":
+        if chkhsh == "9732afa2de833a78655aab9a74bf5b0d332a3b023cc9938beeae4ca9e674523b":
             # ref: https://huggingface.co/openai-community/gpt2
             res = "gpt-2"
-        if chkhsh == "32d85c31273f8019248f2559fed492d929ea28b17e51d81d3bb36fff23ca72b3":
+        if chkhsh == "e97d3ead2ca033c7fe1c334ee51ef1d7900dafecc6f714775e2b42bff5fac995":
             # ref: https://huggingface.co/stabilityai/stablelm-2-zephyr-1_6b
             res = "stablelm2"
-        if chkhsh == "6221ad2852e85ce96f791f476e0b390cf9b474c9e3d1362f53a24a06dc8220ff":
+        if chkhsh == "123d32ec0d221232846c22dad13f1a322e7319eab37ab2d0ea22754d652060a7":
             # ref: https://huggingface.co/smallcloudai/Refact-1_6-base
             res = "refact"
-        if chkhsh == "9c2227e4dd922002fb81bde4fc02b0483ca4f12911410dee2255e4987644e3f8":
+        if chkhsh == "123d32ec0d221232846c22dad13f1a322e7319eab37ab2d0ea22754d652060a7":
             # ref: https://huggingface.co/CohereForAI/c4ai-command-r-v01
             res = "command-r"
-        if chkhsh == "e636dc30a262dcc0d8c323492e32ae2b70728f4df7dfe9737d9f920a282b8aea":
+        if chkhsh == "e97d3ead2ca033c7fe1c334ee51ef1d7900dafecc6f714775e2b42bff5fac995":
             # ref: https://huggingface.co/Qwen/Qwen1.5-7B
             res = "qwen2"
-        if chkhsh == "b6dc8df998e1cfbdc4eac8243701a65afe638679230920b50d6f17d81c098166":
+        if chkhsh == "9732afa2de833a78655aab9a74bf5b0d332a3b023cc9938beeae4ca9e674523b":
             # ref: https://huggingface.co/allenai/OLMo-1.7-7B-hf
             res = "olmo"
         if chkhsh == "a8594e3edff7c29c003940395316294b2c623e09894deebbc65f33f1515df79e":
@@ -465,19 +465,21 @@ class Model:
         if chkhsh == "0876d13b50744004aa9aeae05e7b0647eac9d801b5ba4668afc01e709c15e19f":
             # ref: https://huggingface.co/jinaai/jina-embeddings-v2-base-en
             res = "jina-v2-en"
-        if chkhsh == "171aeeedd6fb548d418a7461d053f11b6f1f1fc9b387bd66640d28a4b9f5c643":
+        if chkhsh == "9732afa2de833a78655aab9a74bf5b0d332a3b023cc9938beeae4ca9e674523b":
             # ref: https://huggingface.co/jinaai/jina-embeddings-v2-base-es
             res = "jina-v2-es"
-        if chkhsh == "27949a2493fc4a9f53f5b9b029c82689cfbe5d3a1929bb25e043089e28466de6":
+        if chkhsh == "9732afa2de833a78655aab9a74bf5b0d332a3b023cc9938beeae4ca9e674523b":
             # ref: https://huggingface.co/jinaai/jina-embeddings-v2-base-de
             res = "jina-v2-de"
-        if chkhsh == "c136ed14d01c2745d4f60a9596ae66800e2b61fa45643e72436041855ad4089d":
+        if chkhsh == "5bbd5b1b041c7eaa7792a5d901950e426fc12d7d84ce2ebfe3c498edd96e517f":
             # ref: https://huggingface.co/abacusai/Smaug-Llama-3-70B-Instruct
             res = "smaug-bpe"
-        if chkhsh == "7967bfa498ade6b757b064f31e964dddbb80f8f9a4d68d4ba7998fcf281c531a":
+        if chkhsh == "9732afa2de833a78655aab9a74bf5b0d332a3b023cc9938beeae4ca9e674523b":
             # ref: https://huggingface.co/jinaai/jina-embeddings-v2-base-code
             res = "jina-v2-code"
-
+        if chkhsh == "0ba81c154fbe31d2030588ac40629fbe0ce7dc851252bfc04199dfa6e09a68e8":
+            # ref: https://huggingface.co/jinaai/jina-embeddings-v2-base-zh
+            res = "jina-v2-zh"
         if res is None:
             logger.warning("\n")
             logger.warning("**************************************************************************************")
